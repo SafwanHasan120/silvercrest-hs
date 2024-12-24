@@ -1,3 +1,7 @@
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import './globals.css';
+
 export default function DashboardLayout({
   children,
 }: {
@@ -5,11 +9,11 @@ export default function DashboardLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {/* Layout UI */}
-        {/* Place children where you want to render a page or nested layout */}
-        <main>{children}</main>
+      <body className="bg-gray-900 text-gray-200">
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
       </body>
     </html>
-  )
+  );
 }
