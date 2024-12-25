@@ -1,6 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { auth } from '@/firebase/firebaseConfig';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from '@/firebase/firebaseConfig';
 
 const EmployerRegister = () => {
   const router = useRouter();
@@ -11,10 +15,28 @@ const EmployerRegister = () => {
     industry: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add registration logic here
-    console.log('Employer registration:', formData);
+    const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(formData.email, formData.password);
+      const user = userCredential.user;
+
+      // Store user type in Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        role: 'employer',
+        companyName: formData.companyName,
+        email: formData.email,
+        industry: formData.industry,
+      });
+
+      console.log('Employer registered:', user);
+      // Redirect to employer dashboard
+      router.push('/dashboard/employer');
+    } catch (error) {
+      console.error('Registration error:', error);
+    }
   };
 
   return (

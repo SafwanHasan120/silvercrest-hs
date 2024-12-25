@@ -11,6 +11,12 @@ const Navbar = () => {
           
           <div className="flex items-center gap-4">
             <Link 
+              href="/employers/register" 
+              className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              For Employers
+            </Link>
+            <Link 
               href="/login" 
               className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
