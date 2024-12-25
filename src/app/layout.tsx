@@ -1,19 +1,26 @@
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import './globals.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Navbar from '@/components/Navbar'
 
-export default function DashboardLayout({
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Your App Name',
+  description: 'Your app description',
+}
+
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-900 text-gray-200">
+      <body className={inter.className}>
         <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
-  );
+  )
 }
