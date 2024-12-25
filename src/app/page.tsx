@@ -3,11 +3,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Briefcase, Building2, GraduationCap } from 'lucide-react';
-import { useRef, useState } from 'react';
-import HeroImage from '../Assets/Hero_Image.jpg'; // Adjust the path as necessary
+import { useRef } from 'react';
+import HeroImage from '../Assets/Hero_Image.jpg';
+import elon from '../Assets/elon.png'
+import eng from '../Assets/eng.png'
+import research from '../Assets/research.png'
+import design from '../Assets/design.png'
+import market from '../Assets/market.png'
+import bus from '../Assets/bus.png'
 
 const Home = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(null);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -21,9 +27,53 @@ const Home = () => {
     }
   };
 
+  const categories = [
+    {
+      title: 'Technology',
+      count: '45 positions',
+      image: elon,
+      description: 'Explore opportunities in software development, IT, and digital innovation',
+      skills: ['Programming', 'Cloud Computing', 'Data Analysis']
+    },
+    {
+      title: 'Engineering',
+      count: '32 positions',
+      image: eng,
+      description: 'Join leading firms in mechanical, electrical, and civil engineering',
+      skills: ['CAD', 'Project Management', 'Technical Design']
+    },
+    {
+      title: 'Research',
+      count: '28 positions',
+      image: research,
+      description: 'Contribute to groundbreaking research projects across various fields',
+      skills: ['Data Analysis', 'Lab Work', 'Scientific Writing']
+    },
+    {
+      title: 'Design',
+      count: '19 positions',
+      image: design,
+      description: 'Create impactful designs in UI/UX, graphic design, and product design',
+      skills: ['Creative Tools', 'User Research', 'Prototyping']
+    },
+    {
+      title: 'Marketing',
+      count: '15 positions',
+      image: market,
+      description: 'Drive growth through digital marketing and brand development',
+      skills: ['Social Media', 'Content Creation', 'Analytics']
+    },
+    {
+      title: 'Business',
+      count: '23 positions',
+      image: bus,
+      description: 'Build your career in finance, consulting, and business operations',
+      skills: ['Analysis', 'Strategy', 'Communication']
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 pt-16 pb-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:16px]" />
         <div className="container mx-auto px-4">
@@ -57,7 +107,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className="bg-white py-16 -mt-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -79,18 +128,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Explore Opportunities Carousel */}
       <section className="bg-gray-50 py-16 relative">
-        <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: "url('/path/to/your/background-image.jpg')" }} />
+        <div className="absolute inset-0 bg-cover bg-center opacity-50" />
         <div className="container mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
             Explore Opportunities
           </h2>
           <div className="relative">
-            {/* Left Scroll Button */}
             <button
               onClick={scrollLeft}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full shadow-lg border hover:bg-gray-100 z-10"
+              className="absolute -left-4 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full shadow-lg border hover:bg-gray-100 z-10"
               aria-label="Scroll left"
             >
               <svg
@@ -109,7 +156,6 @@ const Home = () => {
               </svg>
             </button>
 
-            {/* Carousel Content */}
             <div
               ref={scrollRef}
               className="flex gap-6 overflow-x-auto pb-4 hide-scrollbar"
@@ -118,38 +164,45 @@ const Home = () => {
                 scrollBehavior: 'smooth',
               }}
             >
-              {[
-                { title: 'Technology', count: '45 positions', image: '/path/to/technology-image.jpg' },
-                { title: 'Engineering', count: '32 positions', image: '/path/to/engineering-image.jpg' },
-                { title: 'Research', count: '28 positions', image: '/path/to/research-image.jpg' },
-                { title: 'Design', count: '19 positions', image: '/path/to/design-image.jpg' },
-                { title: 'Marketing', count: '15 positions', image: '/path/to/marketing-image.jpg' },
-                { title: 'Business', count: '23 positions', image: '/path/to/business-image.jpg' },
-              ].map((category, index) => (
+              {categories.map((category, index) => (
                 <Link href={`/jobs/${category.title.toLowerCase()}`} key={index} className="flex-none w-[300px]">
-                  <div
-                    className="relative rounded-xl shadow-md overflow-hidden cursor-pointer h-full"
-                    style={{
-                      backgroundImage: `url(${category.image})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      opacity: 0.8, // Adjust opacity for the background image
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-black opacity-30" /> {/* Overlay for better text visibility */}
-                    <div className="relative p-6 text-white"> {/* Text container */}
-                      <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-                      <p>{category.count}</p>
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[500px] transition-transform duration-300 hover:scale-105">
+                    <div className="relative h-40 w-full">
+                      <Image
+                        src={category.image}
+                        alt={category.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-xl font-semibold text-gray-900">{category.title}</h3>
+                        <span className="text-blue-600 font-medium">{category.count}</span>
+                      </div>
+                      <p className="text-gray-600 mb-4">{category.description}</p>
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-gray-900">Key Skills:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {category.skills.map((skill, skillIndex) => (
+                            <span
+                              key={skillIndex}
+                              className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
 
-            {/* Right Scroll Button */}
             <button
               onClick={scrollRight}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full shadow-lg border hover:bg-gray-100 z-10"
+              className="absolute -right-4 top-1/2 transform -translate-y-1/2 bg-white p-4 rounded-full shadow-lg border hover:bg-gray-100 z-10"
               aria-label="Scroll right"
             >
               <svg
@@ -171,25 +224,24 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 md:p-12 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Ready to Start Your Career Journey?
+              Want to better your skills?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Create your profile today and get personalized job recommendations based on your interests and skills.
+              Go to these places to learn and earn certifications to impress employers based on your intrests
             </p>
             <div className="space-x-4">
-              <Link href="/signup">
+              <Link href="https://www.indeed.com/career-advice/finding-a-job/types-of-certifications-for-jobs" target="_blank" rel="noopener noreferrer">
                 <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300">
-                  Register Now
+                  Certifications
                 </button>
               </Link>
-              <Link href="/employers/register">
+              <Link href="https://www.coursera.org/courseraplus/?utm_medium=sem&utm_source=bg&utm_campaign=B2C_NAMER__coursera_FTCOF_courseraplus_country-US_BrandExact&campaignid=662918304&adgroupid=1245748005518131&device=c&keyword=coursera&matchtype=e&network=o&devicemodel=&adposition=&creativeid=&assetgroupid={assetgroupid}&targetid=kwd-77859617364943:loc-190&extensionid={extensionid}&hide_mobile_promo&msclkid=6475a04ac5ac12d8de20c726512af8dc&utm_term=coursera&utm_content=Coursera%20Plus%20(Exact)" target="_blank" rel="noopener noreferrer">
                 <button className="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
-                  Post a Job
+                  Courses
                 </button>
               </Link>
             </div>
@@ -200,7 +252,6 @@ const Home = () => {
   );
 };
 
-// Hide Scrollbar Styling
 const styles = `
   .hide-scrollbar {
     -ms-overflow-style: none;
