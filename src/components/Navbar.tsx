@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
+import Image from 'next/image';
+import profileImage from '@/Assets/profile.png';
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
@@ -47,10 +49,10 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {user && isStudent && (
               <Link 
-                href="/dashboard/student/profile" 
+                href="" 
                 className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
-                Profile
+                
               </Link>
             )}
             <Link 
@@ -75,12 +77,27 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <button
-                onClick={() => auth.signOut()}
-                className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Logout
-              </button>
+              <div className="flex items-center ml-auto">
+
+                <button
+                  onClick={() => auth.signOut()}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Logout
+                </button>
+                <Link 
+                  href="/dashboard/student/profile" 
+                  className="px-4 py-2"
+                >
+                  <Image 
+                    src={profileImage}
+                    alt="Profile" 
+                    className="h-8 w-8 rounded-full" 
+                    width={32}
+                    height={32}
+                  />
+                </Link>
+              </div>
             )}
           </div>
         </div>

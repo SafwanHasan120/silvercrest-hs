@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { auth } from '@/firebase/firebaseConfig';
 import { useRouter } from 'next/navigation';
+import { db } from '@/firebase/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 
 interface JobListing {
   id: string;
@@ -24,26 +26,20 @@ const StudentDashboard = () => {
       }
     });
 
-    // Fetch all jobs (replace with your actual data fetching logic)
+    // Fetch all jobs from Firestore
     const fetchJobs = async () => {
-      // Temporary dummy data
-      const dummyJobs = [
-        {
-          id: "1",
-          title: "Junior Web Developer Intern",
-          company: "TechCorp Solutions",
-          location: "Remote",
-          type: "Internship",
-          description: "Looking for a passionate student interested in learning web development."
-        },
-        // Add more dummy jobs as needed
-      ];
-      setJobs(dummyJobs);
+      const jobsCollection = collection(db, 'jobs');
+      const jobSnapshot = await getDocs(jobsCollection);
+      const jobList = jobSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as JobListing[];
+      setJobs(jobList);
     };
 
     fetchJobs();
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-white p-8">

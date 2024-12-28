@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { auth } from '@/firebase/firebaseConfig';
 import { useRouter } from 'next/navigation';
+import { db } from '@/firebase/firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
 
 const EmployerDashboard = () => {
   const router = useRouter();
@@ -14,7 +16,6 @@ const EmployerDashboard = () => {
   });
 
   useEffect(() => {
-    // Check if user is authenticated
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
         router.push('/login');
@@ -26,7 +27,26 @@ const EmployerDashboard = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add logic to submit job posting
+
+    // Store job details in Firestore
+    const jobRef = doc(db, 'jobs', jobData.title);
+    await setDoc(jobRef, jobData);
+
+    // Send email to admin via API route
+    const response = await fetch('/api/sendEmail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ jobData }),
+    });
+
+    if (response.ok) {
+      console.log('Email sent successfully');
+    } else {
+      console.error('Error sending email');
+    }
+
     console.log('Job posting:', jobData);
   };
 
