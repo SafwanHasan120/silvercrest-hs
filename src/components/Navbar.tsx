@@ -4,12 +4,23 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
+<<<<<<< Updated upstream
 import { User } from 'firebase/auth';
 
 const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isStudent, setIsStudent] = useState(false);
+=======
+import Image from 'next/image';
+import profileImage from '@/Assets/profile.png';
+import { useRouter } from 'next/navigation';
+
+const Navbar = () => {
+  const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState<'student' | 'company' | 'admin' | null>(null);
+>>>>>>> Stashed changes
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -17,17 +28,15 @@ const Navbar = () => {
         setUser(currentUser);
         try {
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-          if (userDoc.exists() && userDoc.data().role === 'student') {
-            setIsStudent(true);
-          } else {
-            setIsStudent(false);
+          if (userDoc.exists()) {
+            setUserRole(userDoc.data().role);
           }
         } catch (error) {
           console.error('Error fetching user role:', error);
         }
       } else {
         setUser(null);
-        setIsStudent(false);
+        setUserRole(null);
       }
       setLoading(false);
     });
@@ -35,7 +44,23 @@ const Navbar = () => {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return null; // Optionally render a loader while checking auth state.
+  const handleDashboardClick = () => {
+    switch (userRole) {
+      case 'student':
+        router.push('/dashboard/student');
+        break;
+      case 'company':
+        router.push('/dashboard/employer');
+        break;
+      case 'admin':
+        router.push('/dashboard/admin');
+        break;
+      default:
+        router.push('/login');
+    }
+  };
+
+  if (loading) return null;
 
   return (
     <nav className="bg-white border-b shadow-sm">
@@ -46,6 +71,7 @@ const Navbar = () => {
           </Link>
           
           <div className="flex items-center gap-4">
+<<<<<<< Updated upstream
             {user && isStudent && (
               <Link 
                 href="/dashboard/student/profile" 
@@ -53,6 +79,15 @@ const Navbar = () => {
               >
                 Profile
               </Link>
+=======
+            {user && (
+              <button
+                onClick={handleDashboardClick}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Dashboard
+              </button>
+>>>>>>> Stashed changes
             )}
             <Link 
               href="/employers/register" 
