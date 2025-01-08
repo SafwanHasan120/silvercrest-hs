@@ -4,21 +4,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-<<<<<<< Updated upstream
-import { User } from 'firebase/auth';
 
-const Navbar = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isStudent, setIsStudent] = useState(false);
-=======
-import Image from 'next/image';
 import profileImage from '@/Assets/profile.png';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState<'student' | 'company' | 'admin' | null>(null);
->>>>>>> Stashed changes
+
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -71,15 +64,7 @@ const Navbar = () => {
           </Link>
           
           <div className="flex items-center gap-4">
-<<<<<<< Updated upstream
-            {user && isStudent && (
-              <Link 
-                href="/dashboard/student/profile" 
-                className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Profile
-              </Link>
-=======
+
             {user && (
               <button
                 onClick={handleDashboardClick}
@@ -87,7 +72,6 @@ const Navbar = () => {
               >
                 Dashboard
               </button>
->>>>>>> Stashed changes
             )}
             <Link 
               href="/employers/register" 

@@ -46,29 +46,6 @@ export default function Profile() {
     fetchProfile();
   }, [router]);
 
-<<<<<<< Updated upstream
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
-
-  return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Student Profile</h1>
-      <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
-        <p><strong>Name:</strong> {userProfile?.name}</p>
-        <p><strong>Email:</strong> {userProfile?.email}</p>
-        <p><strong>Age:</strong> {userProfile?.age}</p>
-        <p><strong>Grade:</strong> {userProfile?.grade}</p>
-        <p><strong>Awards:</strong> {userProfile?.awards}</p>
-        <p><strong>About Me:</strong> {userProfile?.about}</p>
-        {userProfile?.resume && (
-          <p>
-            <strong>Resume:</strong>{' '}
-            <a href={userProfile.resume} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-              View Resume
-            </a>
-          </p>
-        )}
-=======
   const handleEditProfile = () => {
     router.push('/edit-profile');
   };
@@ -187,7 +164,6 @@ export default function Profile() {
             </div>
           </div>
         </div>
->>>>>>> Stashed changes
       </div>
     </div>
   );

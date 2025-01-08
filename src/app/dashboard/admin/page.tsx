@@ -12,6 +12,13 @@ interface JobListing {
   company: string;
   industry: string;
   description: string;
+  requirements: string;
+  location: {
+    type: string;
+    address: string;
+  };
+  type: string;
+  schedule: string[];
   status: 'pending' | 'approved' | 'rejected';
   timePosted: string;
 }
