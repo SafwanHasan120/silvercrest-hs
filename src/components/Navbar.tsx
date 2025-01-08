@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isStudent, setIsStudent] = useState(false);
   const [loading, setLoading] = useState(true);
 

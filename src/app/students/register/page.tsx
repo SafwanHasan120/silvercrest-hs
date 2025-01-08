@@ -1,9 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 const StudentRegister = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Briefcase, Building2, GraduationCap } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import HeroImage from '../Assets/Hero_Image.jpg'; // Adjust the path as necessary
 
 const Home = () => {

@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
 import Link from 'next/link';
+import { FirebaseError } from 'firebase/app';
 
 interface EmployerData {
   companyName: string;
@@ -45,12 +46,16 @@ export default function EmployerRegister() {
       });
 
       router.push('/dashboard/employer');
-    } catch (err: any) {
-      const errorMessage = err.code === 'auth/email-already-in-use' 
-        ? 'Email already in use'
-        : 'Error creating account. Please try again.';
-      setError(errorMessage);
-      console.error('Registration error:', err);
+    } catch (err) {
+      if (err instanceof FirebaseError) {
+        const errorMessage = err.code === 'auth/email-already-in-use' 
+          ? 'Email already in use'
+          : 'Error creating account. Please try again.';
+        setError(errorMessage);
+        console.error('Registration error:', err);
+      } else {
+        console.error('An unexpected error occurred:', err);
+      }
     } finally {
       setIsLoading(false);
     }
