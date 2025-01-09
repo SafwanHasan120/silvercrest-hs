@@ -375,9 +375,10 @@ const EmployerDashboard = () => {
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         job.status === 'approved' ? 'bg-green-100 text-green-800' :
                         job.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
+                        job.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-600'
                       }`}>
-                        {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                        {job.status ? job.status.charAt(0).toUpperCase() + job.status.slice(1) : 'Unknown Status'}
                       </span>
                     </div>
                   </div>

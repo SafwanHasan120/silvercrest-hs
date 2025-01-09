@@ -4,7 +4,7 @@ import { auth } from '@/firebase/firebaseConfig';
 import { useRouter } from 'next/navigation';
 import { db } from '@/firebase/firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { MapPin, Globe, Bookmark, CreditCard, Award, Heart, Clock, Building, Calendar, Search } from 'lucide-react';
+import { MapPin, Bookmark, CreditCard, Clock, Building, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface JobListing {
@@ -35,9 +35,55 @@ interface Filters {
   schedule: string[];
 }
 
+const categories = [
+  { id: 'all', label: 'All Jobs', icon: <Building size={16} /> },
+  { id: 'full-time', label: 'Full Time', icon: <Clock size={16} /> },
+  { id: 'part-time', label: 'Part Time', icon: <Clock size={16} /> },
+  { id: 'internship', label: 'Internship', icon: <Building size={16} /> },
+];
+
+const industries = [
+  'All Industries',
+  'Technology',
+  'Healthcare',
+  'Finance',
+  'Education',
+  'Retail',
+  // Add more as needed
+];
+
+const scheduleOptions = [
+  'Full-time',
+  'Part-time',
+  'Weekends',
+  'Evenings',
+  'Flexible',
+];
+
+const formatTimePosted = (timestamp: string) => {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 1) return 'Posted 1 day ago';
+  if (diffDays < 30) return `Posted ${diffDays} days ago`;
+  return `Posted ${Math.floor(diffDays / 30)} months ago`;
+};
+
 const StudentDashboard = () => {
   const router = useRouter();
   const [jobs, setJobs] = useState<JobListing[]>([]);
+  const [expandedJob, setExpandedJob] = useState<string | null>(null);
+  const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    searchTerm: '',
+    industry: 'All Industries',
+    jobType: 'all',
+    locationType: 'all',
+    distance: 25,
+    schedule: [],
+  });
 
   useEffect(() => {
     // Check if user is authenticated
@@ -68,7 +114,33 @@ const StudentDashboard = () => {
 
     fetchJobs();
     return () => unsubscribe();
-  }, []);
+  }, [router]);
+
+  const handleScheduleToggle = (schedule: string) => {
+    setFilters(prev => ({
+      ...prev,
+      schedule: prev.schedule.includes(schedule)
+        ? prev.schedule.filter(s => s !== schedule)
+        : [...prev.schedule, schedule]
+    }));
+  };
+
+  useEffect(() => {
+    const filtered = jobs.filter(job => {
+      const matchesSearch = job.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(filters.searchTerm.toLowerCase());
+      const matchesIndustry = filters.industry === 'All Industries' || job.industry === filters.industry;
+      const matchesJobType = filters.jobType === 'all' || job.type.toLowerCase() === filters.jobType;
+      const matchesLocationType = filters.locationType === 'all' || job.location.type.toLowerCase() === filters.locationType;
+      const matchesSchedule = filters.schedule.length === 0 || 
+        filters.schedule.some(schedule => job.schedule.includes(schedule));
+
+      return matchesSearch && matchesIndustry && matchesJobType && 
+        matchesLocationType && matchesSchedule;
+    });
+
+    setFilteredJobs(filtered);
+  }, [jobs, filters]);
 
   const JobCard = ({ job, index }: { job: JobListing; index: number }) => {
     return (

@@ -1,15 +1,14 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-
-import profileImage from '@/Assets/profile.png';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { User } from 'firebase/auth';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [userRole, setUserRole] = useState<'student' | 'company' | 'admin' | null>(null);
 
   const [loading, setLoading] = useState(true);

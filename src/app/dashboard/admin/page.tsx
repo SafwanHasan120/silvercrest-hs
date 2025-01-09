@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { auth, db } from '@/firebase/firebaseConfig';
-import { collection, query, where, getDocs, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
